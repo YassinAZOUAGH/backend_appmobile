@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 
 //@CrossOrigin(origins = "http://192.168.0.246:4200")
 //@CrossOrigin(origins = "http://smarteasyorders.com:4200")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "http://smarteasyorders.com")
 @RestController
 @RequestMapping("/api")
 public class CommandController {

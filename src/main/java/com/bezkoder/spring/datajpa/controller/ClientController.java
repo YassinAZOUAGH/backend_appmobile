@@ -10,7 +10,7 @@ import java.util.Optional;
 
 //@CrossOrigin(origins = "http://192.168.0.246:4200")
 //@CrossOrigin(origins = "http://smarteasyorders.com:4200")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "http://smarteasyorders.com")
 @RestController
 @RequestMapping("/api")
 public class ClientController {
