@@ -20,7 +20,7 @@ public class CategoryController {
 	@Autowired
 	CategoryRepository categoryRepository;
 
-
+	@CrossOrigin(origins = "http://smarteasyorders.com")
 	@GetMapping("/categories")
 	public ResponseEntity<List<Category>> getAllCategories(@RequestParam(required = false) String title) {
 		try {
