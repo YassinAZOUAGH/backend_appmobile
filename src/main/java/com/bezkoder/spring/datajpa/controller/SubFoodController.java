@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.Optional;
 
 //@CrossOrigin(origins = "http://192.168.0.246:4200")
-//@CrossOrigin(origins = "http://smarteasyorders.com:4200")
 @CrossOrigin(origins = "http://smarteasyorders.com")
 @RestController
 @RequestMapping("/api")

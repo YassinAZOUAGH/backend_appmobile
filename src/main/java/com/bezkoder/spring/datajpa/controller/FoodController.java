@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.bezkoder.spring.datajpa.repository.*;
 
 //@CrossOrigin(origins = "http://192.168.0.246:4200")
-//@CrossOrigin(origins = "http://smarteasyorders.com:4200")
 @CrossOrigin(origins = "http://smarteasyorders.com")
 @RestController
 @RequestMapping("/api")
