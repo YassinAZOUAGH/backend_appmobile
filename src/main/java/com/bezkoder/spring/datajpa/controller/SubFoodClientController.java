@@ -15,8 +15,8 @@ import java.util.Optional;
 //@CrossOrigin(origins = "http://192.168.0.246:4200")
 @CrossOrigin(origins = "https://smarteasyorders.com")
 @RestController
-@RequestMapping("/api")
-public class SubFoodController {
+@RequestMapping("/api/client")
+public class SubFoodClientController {
 
     @Autowired
     SubFoodRepository subFoodRepository;
@@ -25,7 +25,7 @@ public class SubFoodController {
     private final SubFoodService subFoodService;
 
     @Autowired
-    public SubFoodController(SubFoodService subFoodService) {
+    public SubFoodClientController(SubFoodService subFoodService) {
         this.subFoodService = subFoodService;
     }
 

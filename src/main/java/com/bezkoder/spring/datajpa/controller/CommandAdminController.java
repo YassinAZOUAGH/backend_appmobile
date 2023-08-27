@@ -15,15 +15,15 @@ import java.util.Optional;
 //@CrossOrigin(origins = "http://192.168.0.246:4200")
 @CrossOrigin(origins = "https://smarteasyorders.com")
 @RestController
-@RequestMapping("/api/command")
-public class CommandController {
+@RequestMapping("/api/admin")
+public class CommandAdminController {
     @Autowired
     CommandRepository commandRepository;
 
     private final CommandeService commandeService;
 
     @Autowired
-    public CommandController(CommandeService commandeService) {
+    public CommandAdminController(CommandeService commandeService) {
         this.commandeService = commandeService;
     }
 

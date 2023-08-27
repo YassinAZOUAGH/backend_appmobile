@@ -14,10 +14,11 @@ import java.util.Optional;
 //@CrossOrigin(origins = "http://192.168.0.246:4200")
 @CrossOrigin(origins = "https://smarteasyorders.com")
 @RestController
-@RequestMapping("/api")
-public class CategoryController {
+@RequestMapping("/api/client")
+public class CategoryClientController {
 	@Autowired
 	CategoryRepository categoryRepository;
+
 
 	@GetMapping("/categories")
 	public ResponseEntity<List<Category>> getAllCategories(@RequestParam(required = false) String title) {

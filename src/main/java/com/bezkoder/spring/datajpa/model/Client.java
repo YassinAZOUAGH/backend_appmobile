@@ -22,13 +22,9 @@ public class Client {
 	@Column(name = "password")
 	private String password;
 
-
-
-
 	public Client() {
 
 	}
-
 	public Client(String name , String phone, String email, String password) {
 		this.name = name;
 		this.phone = phone;

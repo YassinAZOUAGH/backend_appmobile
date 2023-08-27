@@ -1,8 +1,6 @@
 package com.bezkoder.spring.datajpa.controller;
 
-import com.bezkoder.spring.datajpa.model.Command;
 import com.bezkoder.spring.datajpa.model.CommandsToPrepare;
-import com.bezkoder.spring.datajpa.repository.CommandRepository;
 import com.bezkoder.spring.datajpa.repository.CommandsToPrepareRepository;
 import com.bezkoder.spring.datajpa.service.CommandsToPrepareService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,14 +10,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 //@CrossOrigin(origins = "http://192.168.0.246:4200")
 @CrossOrigin(origins = "https://smarteasyorders.com")
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/command")
 public class CommandsToPrepareController {
     @Autowired
     CommandsToPrepareRepository commandsToPrepareRepository;
@@ -41,12 +37,6 @@ public class CommandsToPrepareController {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
-    /*@GetMapping("/getall")
-    public List<CommandsToPrepare> getAllData() {
-        List<CommandsToPrepare> dataList = commandsToPrepareRepository.findAll();
-        return dataList;
-    }*/
 
     @PostMapping("/commandsToPrepare")
     public ResponseEntity<CommandsToPrepare> createCommand(@RequestBody CommandsToPrepare command) {

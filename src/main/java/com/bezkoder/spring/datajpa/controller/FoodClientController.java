@@ -23,8 +23,8 @@ import com.bezkoder.spring.datajpa.repository.*;
 //@CrossOrigin(origins = "http://192.168.0.246:4200")
 @CrossOrigin(origins = "https://smarteasyorders.com")
 @RestController
-@RequestMapping("/api")
-public class FoodController {
+@RequestMapping("/api/client")
+public class FoodClientController {
 	@Autowired
 	FoodRepository foodRepository;
 
