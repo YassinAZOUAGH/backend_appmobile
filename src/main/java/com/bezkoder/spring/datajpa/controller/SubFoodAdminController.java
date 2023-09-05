@@ -1,5 +1,6 @@
 package com.bezkoder.spring.datajpa.controller;
 
+import com.bezkoder.spring.datajpa.model.Food;
 import com.bezkoder.spring.datajpa.model.SubFood;
 import com.bezkoder.spring.datajpa.repository.SubFoodRepository;
 import com.bezkoder.spring.datajpa.service.SubFoodService;
@@ -12,8 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-//@CrossOrigin(origins = "http://192.168.0.246:4200")
-@CrossOrigin(origins = "https://smarteasyorders.com")
+@CrossOrigin(origins = "http://192.168.0.246:4200")
+//@CrossOrigin(origins = "https://smarteasyorders.com")
 @RestController
 @RequestMapping("/api/admin")
 public class SubFoodAdminController {
@@ -95,22 +96,33 @@ public class SubFoodAdminController {
         }
     }
 
-    @PostMapping("/subfoods")
-    public ResponseEntity<SubFood> createSubFood(@RequestBody SubFood subFood) {
-        try {
-            SubFood _subFood = subFoodRepository
-                    .save(new SubFood(
-                            subFood.getFood(),
-                            subFood.getTitle(),
-                            subFood.getPrice(),
-                            subFood.getPic(),
-                            subFood.getDescription(),
-                            subFood.isPublished()
-                    ));
-            return new ResponseEntity<>(_subFood, HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    @GetMapping("/subfoods/all/{foodId}")
+    public ResponseEntity<List<SubFood>> getAllSubfoodsForFood(@PathVariable Long foodId) {
+        // Votre logique pour récupérer tous les subfoods liés à ce foodId
+        List<SubFood> subfoods = subFoodService.getAllSubfoodsForFood(foodId);
+        return ResponseEntity.ok(subfoods);
+    }
+
+    @GetMapping("/subfoods/foods/{foodId}/subfoods/{subfoodId}")
+    public ResponseEntity<SubFood> getSubfoodForFood(
+            @PathVariable Long foodId,
+            @PathVariable Long subfoodId) {
+        // Votre logique pour récupérer le subfood en fonction des IDs
+        SubFood subfood = subFoodService.getSubfoodForFood(foodId, subfoodId);
+        return ResponseEntity.ok(subfood);
+    }
+
+
+
+    @PostMapping("/subfoods/{foodId}")
+    public ResponseEntity<SubFood> addSubfoodToFood(
+            @PathVariable Long foodId,
+            @RequestBody SubFood subfood) {
+        // Votre logique pour ajouter un subfood lié au foodId
+        // Assurez-vous de gérer la liaison entre food et subfood
+        // Enregistrez le subfood dans la base de données
+        SubFood savedSubfood = subFoodService.addSubfoodToFood(foodId, subfood);
+        return ResponseEntity.ok(savedSubfood);
     }
 
     @PutMapping("/subfoods/{id}")
@@ -119,7 +131,6 @@ public class SubFoodAdminController {
 
         if (foodData.isPresent()) {
             SubFood _food = foodData.get();
-            _food.setFood(food.getFood());
             _food.setTitle(food.getTitle());
             _food.setPrice(food.getPrice());
             _food.setPic(food.getPic());
@@ -132,9 +143,14 @@ public class SubFoodAdminController {
     }
 
     @DeleteMapping("/subfoods/{id}")
-    public ResponseEntity<HttpStatus> deleteFood(@PathVariable("id") long id) {
+    public ResponseEntity<HttpStatus> deleteFoodById(@PathVariable("id") long id) {
         try {
-            subFoodRepository.deleteById(id);
+            SubFood subFood = subFoodRepository.findById(id).orElse(null);
+            if (subFood != null) {
+                subFood.setFood(null); // Supprimez l'association avec table Food
+                subFoodRepository.save(subFood); // Mettez à jour l'enregistrement SubFood
+                subFoodRepository.deleteById(id); // Supprimez l'enregistrement SubFood
+            }
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

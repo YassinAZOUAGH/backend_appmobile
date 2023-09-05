@@ -3,15 +3,12 @@ package com.bezkoder.spring.datajpa.model;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "subfoods")
+@Table(name = "subfood")
 public class SubFood {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-
-    @Column(name = "food")
-    private long food;
 
     @Column(name = "title")
     private String title;
@@ -28,12 +25,23 @@ public class SubFood {
     @Column(name = "published")
     private boolean published;
 
-    public SubFood() {
 
+    @ManyToOne( cascade = CascadeType.ALL )
+    @JoinColumn(name = "food_id")
+    private Food food;
+
+    public Food getFood() {
+        return food;
     }
 
-    public SubFood(long food, String title, double price, String pic, String description, boolean published) {
+    public void setFood(Food food) {
         this.food = food;
+    }
+
+    public SubFood() {}
+
+
+    public SubFood(String title, double price, String pic, String description, boolean published) {
         this.title = title;
         this.price = price;
         this.pic = pic;
@@ -45,18 +53,11 @@ public class SubFood {
         return id;
     }
 
-    public long getFood() {
-        return food;
-    }
     public void setPrice(double price) {
         this.price = price;
     }
     public double getPrice() {
         return price;
-    }
-
-    public void setFood(long food) {
-        this.food = food;
     }
 
     public String getTitle() {
@@ -98,5 +99,6 @@ public class SubFood {
     public String toString() {
         return "subFood [id=" + id + ", title=" + title+ ", price=" + price + ",pic" + pic+ ", desc=" + description + ", published=" + published + "]";
     }
+
 
 }

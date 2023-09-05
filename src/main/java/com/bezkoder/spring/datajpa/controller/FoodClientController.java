@@ -20,8 +20,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.bezkoder.spring.datajpa.repository.*;
 
-//@CrossOrigin(origins = "http://192.168.0.246:4200")
-@CrossOrigin(origins = "https://smarteasyorders.com")
+@CrossOrigin(origins = "http://192.168.0.246:4200")
+//@CrossOrigin(origins = "https://smarteasyorders.com")
 @RestController
 @RequestMapping("/api/client")
 public class FoodClientController {
@@ -59,7 +59,7 @@ public class FoodClientController {
 		}
 	}
 
-	@PostMapping("/foods")
+	/*@PostMapping("/foods")
 	public ResponseEntity<Food> createFood(@RequestBody Food food) {
 		try {
 			Food _food = foodRepository
@@ -74,7 +74,7 @@ public class FoodClientController {
 		} catch (Exception e) {
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-	}
+	}*/
 
 	@PutMapping("/foods/{id}")
 	public ResponseEntity<Food> updateFood(@PathVariable("id") long id, @RequestBody Food food) {

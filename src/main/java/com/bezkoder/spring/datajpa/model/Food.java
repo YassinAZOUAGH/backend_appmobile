@@ -13,6 +13,12 @@ public class Food {
 	@Column(name = "title")
 	private String title;
 
+
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
 	@Column(name = "price")
 	private long price;
 
@@ -25,6 +31,11 @@ public class Food {
 	@Column(name = "published")
 	private boolean published;
 
+	@ManyToOne( cascade = CascadeType.ALL )
+	@JoinColumn(name = "user_id")
+	private User user;
+
+
 	public Food() {
 
 	}
@@ -35,6 +46,15 @@ public class Food {
 		this.image = image;
 		this.description = description;
 		this.published = published;
+	}
+
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 
      public long getId() {
