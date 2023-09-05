@@ -13,8 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@CrossOrigin(origins = "http://192.168.0.246:4200")
-//@CrossOrigin(origins = "https://smarteasyorders.com")
+//@CrossOrigin(origins = "http://192.168.0.246:4200")
+@CrossOrigin(origins = "https://smarteasyorders.com")
 @RestController
 @RequestMapping("/api/admin")
 public class SubFoodAdminController {

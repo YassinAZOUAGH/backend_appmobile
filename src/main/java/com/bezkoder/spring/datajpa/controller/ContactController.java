@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
-@CrossOrigin(origins = "http://192.168.0.246:4200")
+//@CrossOrigin(origins = "http://192.168.0.246:4200")
+@CrossOrigin(origins = "https://smarteasyorders.com")
+
 @RestController
 @RequestMapping("/api")
 public class ContactController {

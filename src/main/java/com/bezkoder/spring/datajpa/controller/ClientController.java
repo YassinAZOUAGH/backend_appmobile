@@ -8,8 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 
-@CrossOrigin(origins = "http://192.168.0.246:4200")
-//@CrossOrigin(origins = "https://smarteasyorders.com")
+//@CrossOrigin(origins = "http://192.168.0.246:4200")
+@CrossOrigin(origins = "https://smarteasyorders.com")
 @RestController
 @RequestMapping("/api")
 public class ClientController {
