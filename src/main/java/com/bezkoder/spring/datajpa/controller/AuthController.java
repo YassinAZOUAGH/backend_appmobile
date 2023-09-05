@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 //@CrossOrigin(origins = "http://192.168.0.246:4200", maxAge = 3600)
-@CrossOrigin(origins = "https://smarteasyorders.com", maxAge = 3600)
+@CrossOrigin(origins = "https://smarteasyorders.com")
 
 @RestController
 @RequestMapping("/api/auth")
