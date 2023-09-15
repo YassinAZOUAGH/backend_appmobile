@@ -35,6 +35,11 @@ public class FoodService {
         return foodRepository.findByTitleContainingAndUserId(title, userId);
     }
 
+
+    public List<Food> findFoodByUserAndPublished(Long userId, boolean published) {
+        return foodRepository.findByUser_IdAndPublished(userId, published);
+    }
+
     public void deleteFood(Food food) {
         foodRepository.delete(food);
     }

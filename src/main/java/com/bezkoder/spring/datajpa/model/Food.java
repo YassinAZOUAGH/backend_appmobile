@@ -35,7 +35,6 @@ public class Food {
 	@JoinColumn(name = "user_id")
 	private User user;
 
-
 	public Food() {
 
 	}

@@ -21,15 +21,36 @@ public class SubFoodClientController {
     @Autowired
     SubFoodRepository subFoodRepository;
 
-
-    private final SubFoodService subFoodService;
-
     @Autowired
-    public SubFoodClientController(SubFoodService subFoodService) {
-        this.subFoodService = subFoodService;
+    SubFoodService subFoodService;
+
+
+    /*@GetMapping("/subfoods")
+    public ResponseEntity<List<SubFood>> getAllFoods(@RequestParam(required = false) String title) {
+        try {
+            List<SubFood> subFoods = new ArrayList<SubFood>();
+
+            if (title == null)
+                subFoodRepository.findAll().forEach(subFoods::add);
+            else
+                subFoodRepository.findByTitleContaining(title).forEach(subFoods::add);
+
+            if (subFoods.isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+
+            return new ResponseEntity<>(subFoods, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }*/
+
+    @GetMapping("/subfoods/all/{foodId}")
+    public ResponseEntity<List<SubFood>> getAllSubfoodsForFood(@PathVariable Long foodId) {
+        // Votre logique pour récupérer tous les subfoods liés à ce foodId
+        List<SubFood> subfoods = subFoodService.getAllSubfoodsForFood(foodId);
+        return ResponseEntity.ok(subfoods);
     }
-
-
 
     @GetMapping("/subfoods")
     public ResponseEntity<List<SubFood>> getAllFoods(@RequestParam(required = false) String title) {

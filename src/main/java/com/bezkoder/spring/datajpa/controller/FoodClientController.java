@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.bezkoder.spring.datajpa.model.Food;
+import com.bezkoder.spring.datajpa.service.FoodService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +29,9 @@ public class FoodClientController {
 	@Autowired
 	FoodRepository foodRepository;
 
+	@Autowired
+	FoodService foodService;
+
 	@GetMapping("/foods")
 	public ResponseEntity<List<Food>> getAllFoods(@RequestParam(required = false) String title) {
 		try {
@@ -47,6 +51,22 @@ public class FoodClientController {
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+
+	/*@GetMapping("/foods/user/{user_username}")
+	public List<Food> getFoodByUser_Username(@PathVariable("user_username") String user_username) {
+		List<Food> foodData = foodService.getAllFoodsByUser_Username(user_username);
+		return foodData;
+	}*/
+
+
+	@GetMapping("/foods/user/{user_id}")
+	public List<Food> getFoodByUserAndPublished(
+			@PathVariable Long user_id
+	) {
+		return foodService.findFoodByUserAndPublished(user_id, true);
+	}
+
+
 
 	@GetMapping("/foods/{id}")
 	public ResponseEntity<Food> getFoodById(@PathVariable("id") long id) {
