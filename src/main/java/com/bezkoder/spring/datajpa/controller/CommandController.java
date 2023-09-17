@@ -53,7 +53,7 @@ public class CommandController {
         }
     }
 
-    @PostMapping("/commands")
+   /* @PostMapping("/commands")
     public ResponseEntity<Command> createCommand(@RequestBody Command command) {
         try {
             Command _command = commandRepository
@@ -68,7 +68,7 @@ public class CommandController {
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-    }
+    }*/
 
     @PutMapping("/commands/{id}")
     public ResponseEntity<Command> updateCommand(@PathVariable("id") long id, @RequestBody Command command) {
@@ -107,7 +107,7 @@ public class CommandController {
         }
     }
 
-    @GetMapping("/commands/added-today")
+   /* @GetMapping("/commands/added-today")
     public ResponseEntity<List<Command>> getElementsAjoutesAujourdhui() {
         List<Command> elementsAjoutesAujourdhui = commandeService.getElementsAjoutesAujourdhui();
 
@@ -117,9 +117,9 @@ public class CommandController {
             //System.out.println("-->"+elementsAjoutesAujourdhui);
             return ResponseEntity.ok(elementsAjoutesAujourdhui);
         }
-    }
+    }*/
 
-    @GetMapping("/commands/added-yesterday")
+    /*@GetMapping("/commands/added-yesterday")
     public ResponseEntity<List<Command>> getElementsAjoutesHier() {
         List<Command> elementsAjoutesHier = commandeService.getElementsAjoutesHier();
 
@@ -129,9 +129,9 @@ public class CommandController {
             //System.out.println("-->"+elementsAjoutesAujourdhui);
             return ResponseEntity.ok(elementsAjoutesHier);
         }
-    }
+    }*/
 
-    @GetMapping("/commands/added-this-week")
+   /* @GetMapping("/commands/added-this-week")
     public ResponseEntity<List<Command>> getElementsAjoutesCetteSemaine() {
         List<Command> elementsAjoutesCetteSemaine = commandeService.getElementsAjoutesParSemaine();
 
@@ -141,25 +141,25 @@ public class CommandController {
             //System.out.println("-->"+elementsAjoutesAujourdhui);
             return ResponseEntity.ok(elementsAjoutesCetteSemaine);
         }
-    }
+    }*/
 
-    @GetMapping("/commands/added-this-mounth")
+    /*@GetMapping("/commands/added-this-mounth")
     public List<Command> getElementsAjoutesCeMois() {
         return commandeService.getElementsAjoutesCeMois();
-    }
-    @GetMapping("/commands/getAll")
+    }*/
+    /*@GetMapping("/commands/getAll")
     public List<Command> getAllElements() {
         return commandeService.getAllElements();
-    }
+    }*/
 
-    @GetMapping("/commands/ordre-inverse")
+    /*@GetMapping("/commands/ordre-inverse")
     public List<Command> getAllCommandesOrderOrdreInverse() {
         return commandeService.getAllCommandesOrdreInverse();
-    }
+    }*/
 
 
 
-    @GetMapping("/commands/sum-price-today")
+   /* @GetMapping("/commands/sum-price-today")
     public double getSommePrixAujourdhui() {
         List<Command> elements = commandeService.getElementsAjoutesAujourdhui();
         return commandeService.calculerSommePrix(elements);
@@ -169,22 +169,22 @@ public class CommandController {
         List<Command> elements = commandeService.getElementsAjoutesHier();
         return commandeService.calculerSommePrixHier(elements);
     }
-
-    @GetMapping("/commands/sum-price-thisweek")
+*/
+   /* @GetMapping("/commands/sum-price-thisweek")
     public double getSommePrixThisWeek() {
         List<Command> elements = commandeService.getElementsAjoutesParSemaine();
         return commandeService.calculerSommePrixSemaine(elements);
-    }
+    }*/
 
-    @GetMapping("/commands/sum-price-thismounth")
+   /* @GetMapping("/commands/sum-price-thismounth")
     public double getSommePrixThisMounth() {
         List<Command> elements = commandeService.getElementsAjoutesCeMois();
         return commandeService.calculerSommePrixMois(elements);
-    }
+    }*/
 
-    @GetMapping("/commands/somme-prix-total")
+    /*@GetMapping("/commands/somme-prix-total")
     public double getSommePrixTotal() {
         List<Command> elements = commandeService.getAllElements();
         return commandeService.calculerSommePrixTotal(elements);
-    }
+    }*/
 }

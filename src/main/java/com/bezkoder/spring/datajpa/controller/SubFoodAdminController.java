@@ -34,6 +34,7 @@ public class SubFoodAdminController {
 
     @GetMapping("/subfoods")
     public ResponseEntity<List<SubFood>> getAllFoods(@RequestParam(required = false) String title) {
+
         try {
             List<SubFood> subFoods = new ArrayList<SubFood>();
 

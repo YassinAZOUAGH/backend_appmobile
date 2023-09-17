@@ -17,5 +17,7 @@ public interface FoodRepository extends JpaRepository<Food, Long> {
 
 	List<Food> findByUser_IdAndPublished(Long userId, boolean published);
 
+	List<Food> findByUser_IdAndPublishedAndTitle(Long userId, boolean published, String title);
+
 
 }

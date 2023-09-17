@@ -25,16 +25,30 @@ public class Command {
     @Column(name = "price")
     private double price;
 
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    @ManyToOne( cascade = CascadeType.ALL )
+    @JoinColumn(name = "user_id")
+    private User user;
+
     public Command() {
 
     }
 
-    public Command(String contents, String date, String time, String table, double price) {
+    public Command(String contents, String date, String time, String table, double price, User user) {
         this.contents = contents;
         this.date = date;
         this.time = time;
         this.table = table;
         this.price = price;
+        this.user = user;
     }
 
     public long getId() {

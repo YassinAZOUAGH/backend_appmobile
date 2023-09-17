@@ -1,6 +1,7 @@
 package com.bezkoder.spring.datajpa.service;
 
 import com.bezkoder.spring.datajpa.model.Category;
+import com.bezkoder.spring.datajpa.model.Food;
 import com.bezkoder.spring.datajpa.model.User;
 import com.bezkoder.spring.datajpa.repository.CategoryRepository;
 import com.bezkoder.spring.datajpa.repository.UserRepository;
@@ -36,6 +37,10 @@ public class CategoryService {
         } else {
             throw new IllegalArgumentException("Utilisateur non trouvé : " + userid);
         }
+    }
+
+    public List<Category> findCategoryByUser(Long userId) {
+        return categoryRepository.findCategoryByUser(userId);
     }
 
 

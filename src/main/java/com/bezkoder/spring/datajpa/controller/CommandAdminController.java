@@ -2,10 +2,13 @@ package com.bezkoder.spring.datajpa.controller;
 
 import com.bezkoder.spring.datajpa.model.Command;
 import com.bezkoder.spring.datajpa.repository.CommandRepository;
+import com.bezkoder.spring.datajpa.security.services.UserDetailsImpl;
 import com.bezkoder.spring.datajpa.service.CommandeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -53,7 +56,7 @@ public class CommandAdminController {
         }
     }
 
-    @PostMapping("/commands")
+   /* @PostMapping("/commands")
     public ResponseEntity<Command> createCommand(@RequestBody Command command) {
         try {
             Command _command = commandRepository
@@ -68,7 +71,7 @@ public class CommandAdminController {
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-    }
+    }*/
 
     @PutMapping("/commands/{id}")
     public ResponseEntity<Command> updateCommand(@PathVariable("id") long id, @RequestBody Command command) {
@@ -109,31 +112,51 @@ public class CommandAdminController {
 
     @GetMapping("/commands/added-today")
     public ResponseEntity<List<Command>> getElementsAjoutesAujourdhui() {
-        List<Command> elementsAjoutesAujourdhui = commandeService.getElementsAjoutesAujourdhui();
+        // Obtenir l'objet Authentication de l'utilisateur actuellement authentifié
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        // Vérifier si l'utilisateur est authentifié
+        if (authentication.isAuthenticated() && authentication.getPrincipal() instanceof UserDetailsImpl) {
+            UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+            Long user_id = userDetails.getId();
 
-        if (elementsAjoutesAujourdhui.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        } else {
-            //System.out.println("-->"+elementsAjoutesAujourdhui);
-            return ResponseEntity.ok(elementsAjoutesAujourdhui);
-        }
+            List<Command> elementsAjoutesAujourdhui = commandeService.getElementsAjoutesAujourdhui(user_id);
+
+            if (elementsAjoutesAujourdhui.isEmpty()) {
+                return ResponseEntity.noContent().build();
+            } else {
+                //System.out.println("-->"+elementsAjoutesAujourdhui);
+                return ResponseEntity.ok(elementsAjoutesAujourdhui);
+            }
+        } else return null;
     }
 
     @GetMapping("/commands/added-yesterday")
     public ResponseEntity<List<Command>> getElementsAjoutesHier() {
-        List<Command> elementsAjoutesHier = commandeService.getElementsAjoutesHier();
+        // Obtenir l'objet Authentication de l'utilisateur actuellement authentifié
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        // Vérifier si l'utilisateur est authentifié
+        if (authentication.isAuthenticated() && authentication.getPrincipal() instanceof UserDetailsImpl) {
+            UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+            Long user_id = userDetails.getId();
 
-        if (elementsAjoutesHier.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        } else {
-            //System.out.println("-->"+elementsAjoutesAujourdhui);
-            return ResponseEntity.ok(elementsAjoutesHier);
-        }
+            List<Command> elementsAjoutesHier = commandeService.getElementsAjoutesHier(user_id);
+
+            if (elementsAjoutesHier.isEmpty()) {
+                return ResponseEntity.noContent().build();
+            } else {
+                //System.out.println("-->"+elementsAjoutesAujourdhui);
+                return ResponseEntity.ok(elementsAjoutesHier);
+            }
+        } else return null;
     }
 
     @GetMapping("/commands/added-this-week")
     public ResponseEntity<List<Command>> getElementsAjoutesCetteSemaine() {
-        List<Command> elementsAjoutesCetteSemaine = commandeService.getElementsAjoutesParSemaine();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication.isAuthenticated() && authentication.getPrincipal() instanceof UserDetailsImpl) {
+            UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+            Long user_id = userDetails.getId();
+        List<Command> elementsAjoutesCetteSemaine = commandeService.getElementsAjoutesParSemaine(user_id);
 
         if (elementsAjoutesCetteSemaine.isEmpty()) {
             return ResponseEntity.noContent().build();
@@ -141,50 +164,91 @@ public class CommandAdminController {
             //System.out.println("-->"+elementsAjoutesAujourdhui);
             return ResponseEntity.ok(elementsAjoutesCetteSemaine);
         }
+    }else return null;
     }
 
     @GetMapping("/commands/added-this-mounth")
     public List<Command> getElementsAjoutesCeMois() {
-        return commandeService.getElementsAjoutesCeMois();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication.isAuthenticated() && authentication.getPrincipal() instanceof UserDetailsImpl) {
+            UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+            Long user_id = userDetails.getId();
+        return commandeService.getElementsAjoutesCeMois(user_id);
     }
-    @GetMapping("/commands/getAll")
+        else return null;
+    }
+    /*@GetMapping("/commands/getAll")
     public List<Command> getAllElements() {
         return commandeService.getAllElements();
-    }
+    }*/
 
     @GetMapping("/commands/ordre-inverse")
     public List<Command> getAllCommandesOrderOrdreInverse() {
-        return commandeService.getAllCommandesOrdreInverse();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication.isAuthenticated() && authentication.getPrincipal() instanceof UserDetailsImpl) {
+            UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+            Long user_id = userDetails.getId();
+        return commandeService.getAllCommandesOrdreInverse(user_id);
     }
-
-
+        else return null;
+    }
 
     @GetMapping("/commands/sum-price-today")
     public double getSommePrixAujourdhui() {
-        List<Command> elements = commandeService.getElementsAjoutesAujourdhui();
-        return commandeService.calculerSommePrix(elements);
+        // Obtenir l'objet Authentication de l'utilisateur actuellement authentifié
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        // Vérifier si l'utilisateur est authentifié
+        if (authentication.isAuthenticated() && authentication.getPrincipal() instanceof UserDetailsImpl) {
+            UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+            Long user_id = userDetails.getId();
+            List<Command> elements = commandeService.getElementsAjoutesAujourdhui(user_id);
+            return commandeService.calculerSommePrix(elements);
+
+        }
+        else return 0;
     }
+
     @GetMapping("/commands/sum-price-yesterday")
     public double getSommePrixHier() {
-        List<Command> elements = commandeService.getElementsAjoutesHier();
-        return commandeService.calculerSommePrixHier(elements);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication.isAuthenticated() && authentication.getPrincipal() instanceof UserDetailsImpl) {
+            UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+            Long user_id = userDetails.getId();
+            List<Command> elements = commandeService.getElementsAjoutesHier(user_id);
+            return commandeService.calculerSommePrixHier(elements);
+        }
+        else return 0;
     }
 
     @GetMapping("/commands/sum-price-thisweek")
     public double getSommePrixThisWeek() {
-        List<Command> elements = commandeService.getElementsAjoutesParSemaine();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication.isAuthenticated() && authentication.getPrincipal() instanceof UserDetailsImpl) {
+            UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+            Long user_id = userDetails.getId();
+        List<Command> elements = commandeService.getElementsAjoutesParSemaine(user_id);
         return commandeService.calculerSommePrixSemaine(elements);
+    }else return 0;
     }
-
     @GetMapping("/commands/sum-price-thismounth")
-    public double getSommePrixThisMounth() {
-        List<Command> elements = commandeService.getElementsAjoutesCeMois();
+        public double getSommePrixThisMounth() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication.isAuthenticated() && authentication.getPrincipal() instanceof UserDetailsImpl) {
+            UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+            Long user_id = userDetails.getId();
+        List<Command> elements = commandeService.getElementsAjoutesCeMois(user_id);
         return commandeService.calculerSommePrixMois(elements);
+    }else return 0;
     }
 
     @GetMapping("/commands/somme-prix-total")
     public double getSommePrixTotal() {
-        List<Command> elements = commandeService.getAllElements();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication.isAuthenticated() && authentication.getPrincipal() instanceof UserDetailsImpl) {
+            UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+            Long user_id = userDetails.getId();
+        List<Command> elements = commandeService.getAllElements(user_id);
         return commandeService.calculerSommePrixTotal(elements);
+    }else return 0;
     }
 }

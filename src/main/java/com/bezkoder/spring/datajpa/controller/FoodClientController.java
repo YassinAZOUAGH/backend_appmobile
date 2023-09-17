@@ -32,15 +32,15 @@ public class FoodClientController {
 	@Autowired
 	FoodService foodService;
 
-	@GetMapping("/foods")
-	public ResponseEntity<List<Food>> getAllFoods(@RequestParam(required = false) String title) {
+	@GetMapping("/foods/user/{user_id}")
+	public ResponseEntity<List<Food>> getAllFoods(@PathVariable Long user_id, @RequestParam(required = false) String title) {
 		try {
 			List<Food> foods = new ArrayList<Food>();
 
 			if (title == null)
-				foodRepository.findAll().forEach(foods::add);
+				foodService.findFoodByUserAndPublished(user_id, true).forEach(foods::add);
 			else
-				foodRepository.findByTitleContaining(title).forEach(foods::add);
+				foodRepository.findByUser_IdAndPublishedAndTitle(user_id, true,title).forEach(foods::add);
 
 			if (foods.isEmpty()) {
 				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -59,12 +59,13 @@ public class FoodClientController {
 	}*/
 
 
-	@GetMapping("/foods/user/{user_id}")
+	/*@GetMapping("/foods/user/{user_id}")
 	public List<Food> getFoodByUserAndPublished(
-			@PathVariable Long user_id
+			@PathVariable Long user_id,
+			@RequestParam(required = false) String title
 	) {
 		return foodService.findFoodByUserAndPublished(user_id, true);
-	}
+	}*/
 
 
 

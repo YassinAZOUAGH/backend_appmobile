@@ -22,7 +22,7 @@ public class CommandeService {
         this.commandRepository = commandRepository;
     }
 
-    public List<Command> getElementsAjoutesAujourdhui() {
+    public List<Command> getElementsAjoutesAujourdhui(Long userId) {
         LocalDateTime now = LocalDateTime.now();
 
         // Créer un objet DateTimeFormatter avec le format souhaité
@@ -30,18 +30,18 @@ public class CommandeService {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         // Formater la date et l'heure dans le format spécifié
         String dateEtHeureFormatees = now.format(formatter);
-        return commandRepository.findElementsAjoutesAujourdhui(dateEtHeureFormatees);
+        return commandRepository.findElementsAjoutesAujourdhui(dateEtHeureFormatees, userId);
     }
 
-    public List<Command> getElementsAjoutesHier() {
+    public List<Command> getElementsAjoutesHier(Long userId) {
         LocalDate hier = LocalDate.now().minusDays(1);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         String yesterdayDateFormatees = hier.format(formatter);
-        return commandRepository.findElementsAjoutesAujourdhui(yesterdayDateFormatees);
+        return commandRepository.findElementsAjoutesAujourdhui(yesterdayDateFormatees,userId);
     }
 
 
-    public List<Command> getElementsAjoutesParSemaine() {
+    public List<Command> getElementsAjoutesParSemaine(Long userId) {
         LocalDate dateDebutSemaine = LocalDate.now().with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
         LocalDate dateFinSemaine = LocalDate.now().with(TemporalAdjusters.nextOrSame(DayOfWeek.SUNDAY));
 
@@ -49,10 +49,10 @@ public class CommandeService {
         String dateDebutSemaineDateFormatees = dateDebutSemaine.format(formatter);
         String dateFinSemaineDateFormatees = dateFinSemaine.format(formatter);
 
-        return commandRepository.findElementsAjoutesCetteSemaine(dateDebutSemaineDateFormatees, dateFinSemaineDateFormatees);
+        return commandRepository.findElementsAjoutesCetteSemaine(dateDebutSemaineDateFormatees, dateFinSemaineDateFormatees, userId);
     }
 
-    public List<Command> getElementsAjoutesCeMois() {
+    public List<Command> getElementsAjoutesCeMois(Long userId) {
         LocalDate now = LocalDate.now();
         LocalDate startOfMonth = now.withDayOfMonth(1);
         LocalDate endOfMonth = now.withDayOfMonth(now.lengthOfMonth());
@@ -61,15 +61,15 @@ public class CommandeService {
         String dateDebutMoisDateFormatees = startOfMonth.format(formatter);
         String dateFinMoisDateFormatees = endOfMonth.format(formatter);
 
-        return commandRepository.findElementsAjoutesCeMois(dateDebutMoisDateFormatees, dateFinMoisDateFormatees);
+        return commandRepository.findElementsAjoutesCeMois(dateDebutMoisDateFormatees, dateFinMoisDateFormatees,userId);
     }
 
-    public List<Command> getAllElements() {
-        return commandRepository.findAll();
+    public List<Command> getAllElements(Long userId) {
+        return commandRepository.getAllSum(userId);
     }
 
-    public List<Command> getAllCommandesOrdreInverse() {
-        return commandRepository.findAllCommandesOrdreInverse();
+    public List<Command> getAllCommandesOrdreInverse(Long userId) {
+        return commandRepository.findAllCommandesOrdreInverse(userId);
     }
 
     /* --------------------------------------------------  */

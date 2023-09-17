@@ -1,7 +1,9 @@
 package com.bezkoder.spring.datajpa.controller;
 
 import com.bezkoder.spring.datajpa.model.Category;
+import com.bezkoder.spring.datajpa.model.Food;
 import com.bezkoder.spring.datajpa.repository.CategoryRepository;
+import com.bezkoder.spring.datajpa.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,16 +21,19 @@ public class CategoryClientController {
 	@Autowired
 	CategoryRepository categoryRepository;
 
+	@Autowired
+	CategoryService categoryService;
 
-	@GetMapping("/categories")
-	public ResponseEntity<List<Category>> getAllCategories(@RequestParam(required = false) String title) {
+
+	/*@GetMapping("/categories")
+	public ResponseEntity<List<Category>> getAllCategories(@PathVariable Long user_id, @RequestParam(required = false) String title) {
 		try {
 			List<Category> categories = new ArrayList<Category>();
 
 			if (title == null)
-				categoryRepository.findAll().forEach(categories::add);
+				categoryRepository.findCategoryByUser(user_id).forEach(categories::add);
 			else
-				categoryRepository.findByTitleContaining(title).forEach(categories::add);
+				categoryRepository.findByTitleContaining(user_id, title).forEach(categories::add);
 
 			if (categories.isEmpty()) {
 				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -38,6 +43,11 @@ public class CategoryClientController {
 		} catch (Exception e) {
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
+	}*/
+
+	@GetMapping("/categories/user/{user_id}")
+	public List<Category> getCategoryByUser(@PathVariable Long user_id) {
+		return categoryService.findCategoryByUser(user_id);
 	}
 
 	@GetMapping("/categories/{id}")

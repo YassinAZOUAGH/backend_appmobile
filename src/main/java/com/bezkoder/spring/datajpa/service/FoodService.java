@@ -36,6 +36,10 @@ public class FoodService {
     }
 
 
+    public List<Food> findFoodByUserAndPublishedAndTitle(Long userId, boolean published, String title) {
+        return foodRepository.findByUser_IdAndPublishedAndTitle(userId, published,title);
+    }
+
     public List<Food> findFoodByUserAndPublished(Long userId, boolean published) {
         return foodRepository.findByUser_IdAndPublished(userId, published);
     }

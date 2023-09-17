@@ -26,16 +26,8 @@ public class FoodAdminController {
     @Autowired
     FoodRepository foodRepository;
 
-    //@Autowired
-    //UserRepository userRepository;
-
-
-    private final FoodService foodService;
-
     @Autowired
-    public FoodAdminController(FoodService foodService) {
-        this.foodService = foodService;
-    }
+   FoodService foodService;
 
     @GetMapping("/foods")
     public List<Food> getAllUserFoodsForCurrentUser(@RequestParam(required = false) String title) {
