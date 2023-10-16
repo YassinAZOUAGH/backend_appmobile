@@ -81,7 +81,13 @@ public class FoodAdminController {
         }
     }
 
-    @PostMapping("/foods")
+    @PostMapping("/foods/{userId}")
+    public ResponseEntity<?> addFood(@PathVariable("userId") long userId,@RequestBody Food food) {
+            foodService.addFood(food, userId);
+            return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    /*@PostMapping("/foods")
     public ResponseEntity<?> addFood(@RequestBody Food food) {
 
         // Récupérez l'utilisateur authentifié
@@ -100,7 +106,7 @@ public class FoodAdminController {
             // Vous pouvez renvoyer une erreur ou rediriger vers une page de connexion
             return null;
         }
-    }
+    }*/
 
 
     @DeleteMapping("/foods/{id}")

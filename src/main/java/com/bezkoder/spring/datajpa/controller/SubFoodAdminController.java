@@ -122,8 +122,9 @@ public class SubFoodAdminController {
         // Votre logique pour ajouter un subfood lié au foodId
         // Assurez-vous de gérer la liaison entre food et subfood
         // Enregistrez le subfood dans la base de données
-        SubFood savedSubfood = subFoodService.addSubfoodToFood(foodId, subfood);
-        return ResponseEntity.ok(savedSubfood);
+        subFoodService.addSubfoodToFood(foodId, subfood);
+        //return ResponseEntity.ok(savedSubfood);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PutMapping("/subfoods/{id}")

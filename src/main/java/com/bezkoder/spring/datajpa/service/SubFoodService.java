@@ -38,11 +38,8 @@ public class SubFoodService {
     public SubFood addSubfoodToFood(Long foodId, SubFood subfood) {
         // Récupérez le food correspondant à l'ID
         Food food = foodRepository.findById(foodId).orElseThrow(() -> new ResourceNotFoundException("Food not found with id " + foodId));
-        ;
-
         // Associez le subfood au food
         subfood.setFood(food);
-
         // Enregistrez le subfood dans la base de données
         return subFoodRepository.save(subfood);
     }

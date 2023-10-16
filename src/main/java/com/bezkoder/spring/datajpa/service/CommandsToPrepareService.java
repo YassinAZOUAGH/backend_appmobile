@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 @Service
 public class CommandsToPrepareService {
 
-    private final CommandsToPrepareRepository commandsToPrepareRepository;
+    /*private final CommandsToPrepareRepository commandsToPrepareRepository;
     private final CommandRepository commandRepository;
 
     @Autowired
@@ -26,6 +26,6 @@ public class CommandsToPrepareService {
 
     public List<CommandsToPrepare> getAllElements() {
         return commandsToPrepareRepository.findAll();
-    }
+    }*/
 
 }

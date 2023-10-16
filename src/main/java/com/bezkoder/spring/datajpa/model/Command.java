@@ -26,13 +26,6 @@ public class Command {
     private double price;
 
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
 
     @ManyToOne( cascade = CascadeType.ALL )
     @JoinColumn(name = "user_id")
@@ -79,7 +72,6 @@ public class Command {
         this.time = time;
     }
 
-
     public String getTable() {
         return table;
     }
@@ -95,6 +87,16 @@ public class Command {
     public void setPrice(Double price) {
         this.price = price;
     }
+
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
 
 
     @Override

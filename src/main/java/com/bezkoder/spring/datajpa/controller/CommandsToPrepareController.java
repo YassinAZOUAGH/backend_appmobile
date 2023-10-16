@@ -1,11 +1,19 @@
 package com.bezkoder.spring.datajpa.controller;
 
+import com.bezkoder.spring.datajpa.model.Command;
 import com.bezkoder.spring.datajpa.model.CommandsToPrepare;
+import com.bezkoder.spring.datajpa.model.Food;
+import com.bezkoder.spring.datajpa.model.User;
 import com.bezkoder.spring.datajpa.repository.CommandsToPrepareRepository;
+import com.bezkoder.spring.datajpa.repository.UserRepository;
+import com.bezkoder.spring.datajpa.security.services.UserDetailsImpl;
+import com.bezkoder.spring.datajpa.service.CommandeService;
 import com.bezkoder.spring.datajpa.service.CommandsToPrepareService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -20,14 +28,16 @@ public class CommandsToPrepareController {
     @Autowired
     CommandsToPrepareRepository commandsToPrepareRepository;
 
-    private final CommandsToPrepareService commandsToPrepareService;
+    @Autowired
+    UserRepository userRepository;
 
+    @Autowired
+    CommandsToPrepareService commandsToPrepareService;
 
-    public CommandsToPrepareController(CommandsToPrepareService commandsToPrepareService) {
-        this.commandsToPrepareService = commandsToPrepareService;
-    }
+    @Autowired
+    CommandeService commandeService;
 
-    @GetMapping("/commandsToPrepare/getAll")
+    /*@GetMapping("/commandsToPrepare/getAll")
     public ResponseEntity<List<CommandsToPrepare>> getAllCommands() {
         try {
             List<CommandsToPrepare> commands = new ArrayList<CommandsToPrepare>();
@@ -36,73 +46,75 @@ public class CommandsToPrepareController {
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-    }
+    }*/
 
-    @PostMapping("/commandsToPrepare")
-    public ResponseEntity<CommandsToPrepare> createCommand(@RequestBody CommandsToPrepare command) {
+    @GetMapping("/commandsToPrepare/getByUser/{user_id}")
+    public ResponseEntity<List<CommandsToPrepare>> getCommandsByUser(@PathVariable Long user_id) {
         try {
-            CommandsToPrepare _command = commandsToPrepareRepository
-                    .save(new CommandsToPrepare(
-                            command.getContents(),
-                            command.getDate(),
-                            command.getTime(),
-                            command.getTable(),
-                            command.getPrice()
-                    ));
-            return new ResponseEntity<>(_command, HttpStatus.CREATED);
+            List<CommandsToPrepare> commands = new ArrayList<CommandsToPrepare>();
+            commandsToPrepareRepository.getCommandsByUser(user_id).forEach(commands::add);
+            return new ResponseEntity<>(commands, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-
-    @PutMapping("/commandsToPrepare/{id}")
-    public ResponseEntity<CommandsToPrepare> updateCommand(@PathVariable("id") long id, @RequestBody CommandsToPrepare command) {
-        Optional<CommandsToPrepare> commandData = commandsToPrepareRepository.findById(id);
-
-        if (commandData.isPresent()) {
-            CommandsToPrepare _command = commandData.get();
-            _command.setContents(command.getContents());
-            _command.setDate(command.getDate());
-            _command.setTime(command.getTime());
-            _command.setTable(command.getTable());
-            _command.setPrice(command.getPrice());
-            return new ResponseEntity<>(commandsToPrepareRepository.save(_command), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    @GetMapping("/commandsToPrepare/getInversedByUser/{user_id}")
+    public ResponseEntity<List<CommandsToPrepare>> getInversedCommandsByUser(@PathVariable Long user_id) {
+        try {
+            List<CommandsToPrepare> commands = new ArrayList<CommandsToPrepare>();
+            commandsToPrepareRepository.getInversedCommandsByUser(user_id).forEach(commands::add);
+            return new ResponseEntity<>(commands, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    @GetMapping("/commandsToPrepare/{id}")
-    public ResponseEntity<CommandsToPrepare> getCommandById(@PathVariable("id") long id) {
-        Optional<CommandsToPrepare> commandData = commandsToPrepareRepository.findById(id);
-
-        if (commandData.isPresent()) {
-            return new ResponseEntity<>(commandData.get(), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    @GetMapping("/commandsToPrepare/ordres-inverse/{user_id}")
+    public List<Command> getAllCommandesOrderOrdreInverse(@PathVariable Long user_id) {
+            return commandeService.getAllCommandesOrdreInverse(user_id);
     }
 
 
-    @DeleteMapping("/commandsToPrepare/{id}")
+    @PostMapping("/commandsToPrepare")
+    public ResponseEntity<CommandsToPrepare> createCommand(@RequestBody CommandsToPrepare commandsToPrepare) {
+        try {
+            User user = userRepository.findById(commandsToPrepare.getUser().getId()).orElse(null);
+
+            if (user == null) {
+                // Gérer le cas où l'utilisateur n'existe pas
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+            }
+            CommandsToPrepare command = new CommandsToPrepare(
+                    commandsToPrepare.getContents(),
+                    commandsToPrepare.getDate(),
+                    commandsToPrepare.getTime(),
+                    commandsToPrepare.getTable(),
+                    commandsToPrepare.getPrice(),
+                    user
+            );
+            CommandsToPrepare savedCommand = commandsToPrepareRepository.save(command);
+            return new ResponseEntity<>(savedCommand, HttpStatus.CREATED);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+    @DeleteMapping("/commandsToPrepare/deleteCommand/{id}")
     public ResponseEntity<HttpStatus> deleteCommand(@PathVariable("id") long id) {
         try {
-            commandsToPrepareRepository.deleteById(id);
+            CommandsToPrepare commandsToPrepare = commandsToPrepareRepository.findById(id).orElse(null);
+
+            if (commandsToPrepare != null) {
+                commandsToPrepare.setUser(null); // Supprimez l'association avec l'utilisateur
+                commandsToPrepareRepository.save(commandsToPrepare); // Mettez à jour l'enregistrement Food
+                commandsToPrepareRepository.deleteById(id);
+            }
+
+
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
-    @DeleteMapping("/commandsToPrepare")
-    public ResponseEntity<HttpStatus> deleteAllCommands() {
-        try {
-            commandsToPrepareRepository.deleteAll();
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
  }

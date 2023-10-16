@@ -25,16 +25,20 @@ public class CommandsToPrepare {
     @Column(name = "price")
     private double price;
 
+    @ManyToOne( cascade = CascadeType.ALL )
+    @JoinColumn(name = "user_id")
+    private User user;
     public CommandsToPrepare() {
 
     }
 
-    public CommandsToPrepare(String contents, String date, String time, String table, double price) {
+    public CommandsToPrepare(String contents, String date, String time, String table, double price,User user) {
         this.contents = contents;
         this.date = date;
         this.time = time;
         this.table = table;
         this.price = price;
+        this.user = user;
     }
 
     public long getId() {
@@ -65,7 +69,6 @@ public class CommandsToPrepare {
         this.time = time;
     }
 
-
     public String getTable() {
         return table;
     }
@@ -80,6 +83,15 @@ public class CommandsToPrepare {
 
     public void setPrice(Double price) {
         this.price = price;
+    }
+
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
 
